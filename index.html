@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asistente FCV:PP · Finanzas que Cambian Vidas:Para Principiantes</title>
+
+  <!-- Estilos del widget de chat de n8n -->
+  <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================
+       PALETA FCV
+       forest 0F5132 · green 198754 · mint 20C997 · gold F4B400
+       ink 1B1F1D · gray 5B6B63 · soft EAF3EE
+       ========================================================== */
+    :root {
+      --fcv-forest: #0F5132;
+      --fcv-green:  #198754;
+      --fcv-mint:   #20C997;
+      --fcv-gold:   #F4B400;
+      --fcv-ink:    #1B1F1D;
+      --fcv-gray:   #5B6B63;
+      --fcv-soft:   #EAF3EE;
+
+      /* --- Tematización del widget de n8n con los verdes de FCV --- */
+      --chat--color-primary: var(--fcv-green);
+      --chat--color-primary-shade-50: #14764a;
+      --chat--color-primary-shade-100: var(--fcv-forest);
+      --chat--color-secondary: var(--fcv-mint);
+      --chat--color-secondary-shade-50: #1bb589;
+
+      --chat--color-white: #ffffff;
+      --chat--color-light: #f6faf8;
+      --chat--color-light-shade-50: #e9f1ec;
+      --chat--color-light-shade-100: #d9e6de;
+      --chat--color-medium: #cdd8d2;
+      --chat--color-dark: var(--fcv-ink);
+      --chat--color-typing: var(--fcv-gray);
+
+      --chat--spacing: 1rem;
+      --chat--border-radius: 0.65rem;
+      --chat--transition-duration: 0.15s;
+
+      --chat--header--background: transparent;
+      --chat--header--color: var(--fcv-ink);
+      --chat--heading--font-size: 0; /* ocultamos el header interno; usamos el nuestro */
+
+      --chat--message--font-size: 0.98rem;
+      --chat--message--user--background: var(--fcv-forest);
+      --chat--message--user--color: #ffffff;
+      --chat--message--bot--background: #ffffff;
+      --chat--message--bot--color: var(--fcv-ink);
+
+      --chat--textarea--height: 3rem;
+      --chat--input--send--button--background: var(--fcv-green);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(1200px 500px at 50% -10%, #f2f9f5 0%, var(--fcv-soft) 55%, #e2eee7 100%);
+      font-family: Calibri, "Segoe UI", system-ui, -apple-system, sans-serif;
+      color: var(--fcv-ink);
+    }
+
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: clamp(1.25rem, 4vw, 2.5rem) 1.25rem 2rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ---------- Encabezado de marca ---------- */
+    .brand {
+      background: linear-gradient(135deg, var(--fcv-forest) 0%, #14764a 100%);
+      color: #fff;
+      border-radius: 18px;
+      padding: 1.9rem 1.75rem 1.6rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 14px 40px -18px rgba(15, 81, 50, 0.55);
+    }
+    /* motivo "crecimiento": una línea dorada que sube, guiño al interés compuesto */
+    .brand::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: 0;
+      height: 4px; width: 100%;
+      background: linear-gradient(90deg, var(--fcv-mint) 0%, var(--fcv-gold) 100%);
+    }
+    .brand .eyebrow {
+      font-size: 0.74rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #bfe6d3;
+      margin: 0 0 0.55rem;
+      font-weight: 600;
+    }
+    .brand h1 {
+      font-family: "Century Schoolbook", Georgia, "Times New Roman", serif;
+      font-size: clamp(1.7rem, 5vw, 2.3rem);
+      line-height: 1.1;
+      margin: 0 0 0.45rem;
+      font-weight: 700;
+    }
+    .brand p {
+      margin: 0;
+      color: #d9efe4;
+      font-size: 1.02rem;
+      max-width: 46ch;
+    }
+
+    /* ---------- Tarjeta del chat ---------- */
+    .chat-card {
+      margin-top: 1.15rem;
+      background: #ffffff;
+      border-radius: 18px;
+      border: 1px solid #dce8e1;
+      box-shadow: 0 18px 50px -26px rgba(27, 31, 29, 0.35);
+      overflow: hidden;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 520px;
+    }
+    #chat-container {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+    }
+    /* el widget de n8n en modo fullscreen llena la tarjeta */
+    #chat-container .chat-layout { height: 100%; width: 100%; }
+
+    /* ---------- Nota de privacidad / pie ---------- */
+    .foot {
+      margin-top: 1rem;
+      text-align: center;
+      color: var(--fcv-gray);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+    .foot strong { color: var(--fcv-forest); font-weight: 600; }
+
+    @media (max-width: 480px) {
+      .brand { padding: 1.5rem 1.25rem 1.35rem; }
+      .chat-card { min-height: 60vh; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="brand">
+      <p class="eyebrow">Finanzas que Cambian Vidas:Para Principiantes</p>
+      <h1>Asistente FCV:PP</h1>
+      <p>Escríbeme cualquier duda financiera del taller y con gusto te oriento, paso a paso.</p>
+    </header>
+
+    <main class="chat-card">
+      <div id="chat-container"></div>
+    </main>
+
+    <p class="foot">
+      Este asistente es una herramienta educativa del taller; <strong>no compartas datos personales</strong>
+      (tarjetas, NIP, contraseñas). Para temas que te toquen de cerca, acércate con tu profesor.
+    </p>
+  </div>
+
+  <!-- Widget de chat de n8n -->
+  <script type="module">
+    import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+    createChat({
+      // 👇👇  PEGA AQUÍ TU WEBHOOK URL DEL NODO "When chat message received"  👇👇
+      webhookUrl: 'https://n8n-production-8247.up.railway.app/webhook/1808238f-81e4-4a0f-919f-2020187ac347/chat',
+
+      target: '#chat-container',
+      mode: 'fullscreen',
+      showWelcomeScreen: false,
+      loadPreviousSession: true,        // recuerda la conversación del alumno en la misma sesión
+      initialMessages: [
+        '¡Hola! 👋 Soy el Asistente de FCV.',
+        'Escríbeme tu duda financiera y te explico de forma sencilla.'
+      ],
+      i18n: {
+        en: {
+          title: '',
+          subtitle: '',
+          getStarted: 'Nueva conversación',
+          inputPlaceholder: 'Escribe tu duda financiera…',
+          closeButtonTooltip: 'Cerrar'
+        }
+      }
+    });
+  </script>
+</body>
+</html>
